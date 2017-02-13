@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# ----------------------------------------------------------------------------- #
+# Project ignored files
+
+settings.py
+.vscode 
