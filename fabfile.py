@@ -3,6 +3,7 @@ from pathlib import PurePosixPath, PureWindowsPath
 import os
 
 from settings import host, prod_path_tuple, dev_path_tuple
+import flags
 
 # settings outside git repo
 env.hosts = host

@@ -91,5 +91,7 @@ ENV/
 # ----------------------------------------------------------------------------- #
 # Project ignored files
 
-settings.py
 .vscode 
+settings.py
+.STAGED_TO_DEPLOY
+.READY_TO_DEPLOY
