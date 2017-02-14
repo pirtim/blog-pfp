@@ -1,16 +1,17 @@
 '''
 Basic flagging through text files
 '''
-import os#, git
 from pathlib import Path
+from git import Repo
 
 class Flag:
+    # rewrite state as @property https://docs.python.org/3.6/library/functions.html#property
     def __init__(self, name):
         assert name == name.upper(), 'Only upper flags names are allowed'        
         self.name = name
         self.path = Path('.', '.' + name)
         assert not self.path.is_dir(), 'Flag file cannot be a directory'
-        assert self.check_good_state(), 'Wrong Flag file starting state'
+        # assert self.check_good_state(), 'Wrong Flag file starting state'
     
     def _get_state(self):
         if self.path.is_file():
@@ -21,25 +22,30 @@ class Flag:
 
     def get_state(self):
         state = self._get_state()
-        assert Flag._check_good_state(state)
+        if state != None:
+            assert self.__class__._check_good_state(state), 'Wrong state'
         return state
 
     def set_state(self, state):
-        assert Flag._check_good_state(state)
         if state == None:
-            self.path.unlink()
-        else:
+            if self.path.is_file():
+                self.path.unlink()
+        else:            
+            state = str(state)
+            assert self.__class__._check_good_state(state), 'Wrong state'
             with self.path.open('w') as f:
-                f.write(str(state))
+                f.write(state)
     
     def check_good_state(self):
-        return Flag._check_good_state(self._get_state())
+        state = self._get_state()
+        return state == None or self.__class__._check_good_state(state)
 
     @classmethod
     def _check_good_state(cls, state):
         '''
         Checked before state assigment and reading.
         Child-classes can iplement this method.
+        None is always good.
         '''
         return True
 
