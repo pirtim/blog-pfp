@@ -1,9 +1,10 @@
 from fabric.api import local, run, hosts, env, cd
 from pathlib import PurePosixPath, PureWindowsPath
+from git import Repo
 import os
 
 from settings import host, prod_path_tuple, dev_path_tuple
-import flags
+from flags import BranchFlag
 
 # settings outside git repo
 env.hosts = host
@@ -23,6 +24,10 @@ def hello(name="world"):
     print("Hello %s!" % name)
   
 def deploy():
+    repo = Repo('.')
+    staged_flag = BranchFlag('STAGED_TO_DEPLOY', repo)
+    # staged_flag.set_state_current_branch()
+
     local('ls')
 
 

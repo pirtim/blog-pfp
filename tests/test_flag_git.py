@@ -18,7 +18,7 @@ class Test_Flag(unittest.TestCase):
         for path, content in zip(filenames_master, ['con1', 'con2', 'con3']):
             (self.tpath / path).write_text(content)
         self.repo.index.add(filenames_master)
-        self.repo.index.commit("initial commit")
+        self.repo.index.commit('initial commit')
         second_branch = self.repo.create_head('second', 'HEAD')
         second_branch.checkout()
         filenames_second = ['test1s','test2s','test3s'] 
@@ -27,7 +27,7 @@ class Test_Flag(unittest.TestCase):
             (self.tpath / path).write_text(content)
             print(self.tpath / path)
         self.repo.index.add(filenames_second)
-        self.repo.index.commit("second commit")
+        self.repo.index.commit('second commit')
         self.repo_heads_names = [h.name for h in self.repo.heads]
         self.assertListEqual(self.repo_heads_names, ['master', 'second'])
 
@@ -54,6 +54,13 @@ class Test_Flag(unittest.TestCase):
         delattr(self.flag, "state")
         self.assertEqual(self.flag.state, None)
         self.assertFalse(self.flag.path.is_file())
+
+    def test_set_state_current_branch(self):
+        self.flag.set_state_current_branch()
+        self.assertEqual(self.flag.state, 'second')
+        self.repo.heads['master'].checkout()
+        self.flag.set_state_current_branch()
+        self.assertEqual(self.flag.state, 'master')
 
     def tearDown(self):
         # https://github.com/gitpython-developers/GitPython/issues/553

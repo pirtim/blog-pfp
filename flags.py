@@ -2,7 +2,6 @@
 Basic flagging through text files
 '''
 from pathlib import Path
-from git import Repo
 
 class Flag:
     '''
@@ -66,12 +65,17 @@ class BranchFlag(Flag):
     Only allowed states: [None, #'name of related repo branch']
     '''
     def __init__(self, name, repo):
+        '''
+        repo `should` be an instance of git.Repo
+        '''
         super().__init__(name)
-        assert isinstance(repo, Repo)
         self.repo = repo
 
     def get_heads_names(self):
         return [h.name for h in self.repo.heads]
+
+    def set_state_current_branch(self):
+        self.state = self.repo.head.ref.name
 
     @classmethod
     def _check_state(cls, state, self):
