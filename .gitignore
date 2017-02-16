@@ -95,4 +95,3 @@ ENV/
 settings.py
 .STAGED_TO_DEPLOY
 .READY_TO_DEPLOY
-tests/test.py

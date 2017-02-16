@@ -1,7 +1,5 @@
 import unittest
-# import blog-pfp.flags
-# from flags import Flag
-from blog_pfp.flags import Flag
+from flags import Flag
 
 def unlink_if_file(path):
     if path.is_file():
@@ -9,7 +7,7 @@ def unlink_if_file(path):
 
 class FlagDigit(Flag):
     @classmethod
-    def _check_state(cls, state):
+    def _check_state(cls, state, self=None):
         # print(str(state), flush=True)
         return str.isdigit(state)
 
@@ -45,6 +43,12 @@ class Test_Flag(unittest.TestCase):
         self.assertEqual(self.fd.state, '1')
         self.assertTrue(self.fd.check_state())        
         self.assertRaises(AssertionError, setattr, self.fd , 'state', 'asd')
+
+    def test_del_state(self):
+        self.f.state = "second"
+        delattr(self.f, "state")
+        self.assertEqual(self.f.state, None)
+        self.assertFalse(self.f.path.is_file())
 
     def tearDown(self):
         self.f.state = None
